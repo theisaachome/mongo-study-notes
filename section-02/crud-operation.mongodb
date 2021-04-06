@@ -4,28 +4,73 @@
 // The current database to use.
 use('users');
 
-db.userData.insertOne(
-    {
-    "name": "isaac home",
-    "username": "isaac",
-    "email": "isaachome@april.biz",
-    "address": {
-      "street": "Kulas Light",
-      "suite": "Apt. 556",
-      "city": "Gwenborough",
-      "zipcode": "92998-3874",
-      "geo": {
-        "lat": "-37.3159",
-        "lng": "81.1496"
-      }
-    },
-    "phone": "1-770-736-8031 x56442",
-    "website": "hildegard.org",
-    "company": {
-      "name": "Romaguera-Crona",
-      "catchPhrase": "Multi-layered client-server neural-net",
-      "bs": "harness real-time e-markets"
-    }
-  }
-)
-db.userData.find().pretty()
+// db.userData.insertOne(
+//     {
+//     "name": "isaac home",
+//     "username": "isaac",
+//     "email": "isaachome@april.biz",
+//     "address": {
+//       "street": "Kulas Light",
+//       "suite": "Apt. 556",
+//     },
+//     "phone": "1-770-736-8031 x56442",
+//     "website": "hildegard.org",
+//     "company": {
+//       "name": "Romaguera-Crona",
+//       "catchPhrase": "Multi-layered client-server neural-net",
+//       "bs": "harness real-time e-markets"
+//     }
+//   }
+// );
+
+// update new field in the document
+// $ is reserved operator 
+// // $set to update new field
+// db.userData.updateOne({_id:"606be280a4205504b45c7fc4"},
+// {$set:{
+//   marker:"raw"
+// }});
+// updateMany leave empty filter
+// db.userData.updateMany({},{$set:{marker:"raw"}});
+// db.userData.find({marker:"raw"}).pretty();
+
+// db.userData.deleteOne({username:"isaac"})
+// db.userData.deleteMany({});
+// db.userData.deleteMany({marker:'raw'});
+
+
+// understanding insertMany();
+// array to insert
+db.blog.insertMany(
+[
+{
+"userId": 1,
+"id": 1,
+"title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+"body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+},
+{
+"userId": 1,
+"id": 2,
+"title": "qui est esse",
+"body": "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
+},
+{
+"userId": 1,
+"id": 3,
+"title": "ea molestias quasi exercitationem repellat qui ipsa sit aut",
+"body": "et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut"
+}
+]);
+
+
+// updateOne() take filter which to update
+// when we want to update specific data
+
+// updateMany() 
+
+// update() take filter and object to update but it replace the entire document
+
+// for replace use 
+
+db.blog.replaceOne({},{});

@@ -5,7 +5,12 @@
 - [Understanding Database Collection Document](#understanding-database-collection-document)
 - [Creating Database Collection](#creating-database-collection)
 - [Understandinng JSON DATA](#understandinng-jSON-data)
+- [Comparing JSON and BSON](#comparing-json-and-bson)
 - [CRUD Operation & MongoDB](#crud-operation-&-mongoDB)
+- [Finding Inserting Deleting Updating](#finding-inserting-deleting-updating)
+- [Understandig InsertMany](#understandig-insertMany)
+- [Deeper into finding Data](#deeper-into-finding-data)
+- [Update Vs UpdateMany](#update-vs-updatemany)
 
 ---
 
@@ -86,14 +91,14 @@ db.userData.find().pretty()
   )
   ```
 
-## **JSON vs BJOSN**
+## **Comparing JSON and BSON**
 
 - Mongo use BJSON for storing data.
 - User will deal only JSON.
 - behind the mongo convert json to bjson
 - by using MongoDb Drivers
 
-### **Why BJSON**
+#### **Why BJSON**
 
 - Efficiennt Storage
 - additional data types
@@ -168,3 +173,188 @@ db.userData.find().pretty()
 - Display flight information
 
   ![](section-02/crud-example.png)
+
+---
+
+### **Finding Inserting Deleting Updating**
+
+- find all
+  - without filter
+
+```shell
+
+  db.userData.find().pretty();
+
+```
+
+- using filter
+
+```shell
+ db.userData.find({_id:ObjectId("606be36635ad5404b4c23dfc")}).pretty()
+```
+
+- **_findOne()_**
+  - find element that match first
+
+```shell
+db.userData.findOne();
+```
+
+---
+
+### **Insert Document**
+
+- insert new element
+
+```shell
+
+$ db.userData.insertOne(
+  {
+    "name": "isaac home",
+    "username": "isaac",
+    "email": "isaachome@april.biz",
+    "address": {
+    "street": "Kulas Light",
+    "suite": "Apt. 556",
+    },
+    "phone": "1-770-736-8031 x56442",
+    "website": "hildegard.org",
+    "company": {
+    "name": "Romaguera-Crona",
+    "catchPhrase": "Multi-layered client-server neural-net",
+    "bs": "harness real-time e-markets"
+    }
+  }
+);
+
+```
+
+---
+
+### **Update Document**
+
+- update new field in the document using **_$set operator_**
+
+- $ is reserved operator
+
+- $set to update new field at existing document
+
+```shell
+$ db.userData.updateOne(
+    {_id:"606be280a4205504b45c7fc4"},
+    {
+      $set:{
+      marker:"raw"
+      }
+    }
+  );
+```
+
+- updateMany leave empty filter
+
+```shell
+
+ $ db.userData.updateMany({},{$set:{marker:"raw"}});
+
+ $ db.userData.find({marker:"raw"}).pretty();
+
+```
+
+---
+
+### **Delete Document**
+
+- delete document
+  - take filter to match on which key and value.
+  - deleteOne({})
+
+```shell
+
+  db.userData.deleteOne({username:"isaac"})
+
+```
+
+- deleteMany({})
+  - must all document have common fields
+  - or can delete all document with empty filter
+
+```shell
+db.userData.deleteMany({marker:'raw'});
+
+db.userData.deleteMany({});
+```
+
+---
+
+### **Understandig InsertMany**
+
+- To insert many documentm(array objects) at once.
+
+  - insertMany()
+
+  - it take array []
+
+```shell
+db.blog.insertMany(
+  [
+    {
+    "userId": 1,
+    "id": 1,
+    "title": "sunt aut facere optio reprehenderit",
+    "body": "quia et suscipit"
+    },
+    {
+    "userId": 1,
+    "id": 2,
+    "title": "qui est esse",
+    "body": "est rerum tempore "
+    }
+  ]
+);
+```
+
+---
+
+### **Deeper into finding Data**
+
+```shell
+ db.blog.find({title : "qui est esse"}).pretty()
+```
+
+- using operator
+  - the general form
+
+```shell
+ { field : { $gt : value } }
+
+db.blog.find({age:{$gt:9}}).pretty()
+
+```
+
+---
+
+### **Update Vs UpdateMany**
+
+- updateOne() take filter which to update
+
+- when we want to update specific data (partially)
+
+- updateMany()
+
+#### **caution**
+
+- update() take filter and object to update but it replace the entire document
+
+  ```shell
+  db.blog.update({_id:ObjectId("606be9bdf64d9a04b473fea4")},{name:"isaachome"});
+  ```
+
+  **note**:
+
+  - _update({},{})_ without $set operator is not allowed in _updateOne()_ and _updateMany()_ but only at _update()_.
+
+- for replace use
+
+```shell
+ db.blog.replaceOne({},{});
+```
