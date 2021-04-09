@@ -1,6 +1,6 @@
 ## **SECTION 02: CRUD Operations**
 
-### [Table of Contents]
+### [Table of Contents](#table-of-contents)
 
 - [Understanding Database Collection Document](#understanding-database-collection-document)
 - [Creating Database Collection](#creating-database-collection)
@@ -11,6 +11,10 @@
 - [Understandig InsertMany](#understandig-insertMany)
 - [Deeper into finding Data](#deeper-into-finding-data)
 - [Update Vs UpdateMany](#update-vs-updatemany)
+- [Understanding find the Cursor Object](#understanding-find-the-cursor-object)
+- [Understanding Projection](#understanding-projection)
+- [Embedded Documents Array](#embedded-documents-array)
+- [Working With Embedded Document](#working-with-embedded-document)
 
 ---
 
@@ -357,4 +361,116 @@ db.blog.find({age:{$gt:9}}).pretty()
 
 ```shell
  db.blog.replaceOne({},{});
+```
+
+---
+
+### Understanding find the Cursor Object
+
+- find() give first 20 result .
+- Type "ite" for more.
+
+#### **what does it means?**
+
+- find() does not give all the array documents in Collection.
+  - if Collection have 20 millions of document and give all the document at once.
+- instead find() give Cursor Object
+
+  - Cursor object is with meta other thing
+
+  - Cycle through Results.
+
+  - it use to fetch the next data from Collectionn
+
+- to fetch all the document
+
+#### toArray()
+
+```shell
+db.passager.find().toArray()
+```
+
+#### forEach()
+
+```swift
+db.passager.find().forEach((p)=>{printjson(p)});
+```
+
+Note:
+
+- find() give Cursor Object where we can use extra methods such as toArray(), forEach() and pretty() .... etc.
+
+- that'y we can not use findOne().pretty()
+
+### Understanding Projection
+
+- filter only wanted fields from database
+
+  ![](section-02/projection.png)
+
+- how
+  - using 1 to include the field
+  - and 0 to explicitly the field
+  - note : \_id is always included.
+
+```shell
+ db.passengers.find({},{name:1}).pretty()
+ db.passengers.find({},{name:1,_id:0}).pretty()
+```
+
+- this happen in mongo database
+- before it ship to the application
+- so we don't get unecessary data fields.
+
+---
+
+### Embedded Documents Array
+
+- Core feature of mongodb
+
+- in A Document You can store
+
+  - Embedded Document (nested document)
+
+  - up to 100 Levels of nesting
+
+  - 16 mb per document
+
+  - Arrays which can hold ANY DATA
+
+#### Embedded Document
+
+![](section-02/embedded-document.png)
+
+### Arrays Document
+
+![](section-02/array-document.png)
+
+---
+
+### Working With Embedded Document
+
+```shell
+db.flightData.updateMany(
+  {},{
+    $set:{
+      status:{
+        description:"on-time",
+        lastupdated:"1 hour ago"
+        }
+    }
+  });
+
+{
+	"_id" : ObjectId("6020cec3841bedbccd56b0db"),
+	"departureAirport" : "LHR",
+	"arrivalAirport" : "TXL",
+	"aircraft" : "Airbus A320",
+	"distance" : 950,
+	"intercontinental" : false,
+	"status" : {
+		"description" : "on-time",
+		"lastupdated" : "1 hour ago"
+	}
+}
 ```
