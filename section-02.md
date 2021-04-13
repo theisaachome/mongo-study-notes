@@ -15,6 +15,8 @@
 - [Understanding Projection](#understanding-projection)
 - [Embedded Documents Array](#embedded-documents-array)
 - [Working With Embedded Document](#working-with-embedded-document)
+- [Working With Arrays](#working-with-arrays)
+- [Accessinng Structure Data](#accessing-structure-data)
 
 ---
 
@@ -473,4 +475,55 @@ db.flightData.updateMany(
 		"lastupdated" : "1 hour ago"
 	}
 }
+```
+
+---
+
+### Working With Arrays
+
+```shell
+ db.insertOne({
+   "name":"Albert",
+   "age":30,
+   "hobbies":[
+     "Sports",
+     "Cookinng",
+   ]
+ })
+```
+
+---
+
+### Accessinng Structure Data
+
+- only array from documennt.
+
+```shell
+db.passengers.findOne({},).hobbies
+```
+
+- passenager with hobbies
+
+```shell
+ db.passenngers.find({hobbies:"sports"}).pretty();
+```
+
+- queryinng Object Data.
+
+- using dot . operation in embadded fields.
+
+- without dot it will not unknown fields.
+
+```shell
+db.flightData.find({
+  "status.description":"on-time"
+}).pretty();
+```
+
+- nested fields
+
+```shell
+db.flightData.find({
+  "status.details.responsible":"isaac"
+}).pretty();
 ```
