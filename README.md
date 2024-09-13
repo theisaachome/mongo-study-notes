@@ -19,3 +19,17 @@ db.createUser({user:"root",pwd:"pwd@root",roles:["userAdminAnyDatabase"]});
 ```sh
 mongosh -u {user-name} -p {password}
 ```
+
+```sh
+use learnAppDb;
+
+db.createUser({user:"appdev",pwd:"dev", roles:["readWrite"]});
+db.logout();
+
+db.auth('appdev','dev');
+
+db.words.insertOne({"word":"ages"});
+
+db.words.find();
+
+```
